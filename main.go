@@ -19,19 +19,23 @@ func main(){
 	}
 
 	// Reading a  message from channel is blocking operation
-	fmt.Println(<-c)
-	fmt.Println(<-c)
-	fmt.Println(<-c)
-	fmt.Println(<-c)
-	fmt.Println(<-c)
+	// fmt.Println(<-c)
+	// fmt.Println(<-c)
+	// fmt.Println(<-c)
+	// fmt.Println(<-c)
+	// fmt.Println(<-c)
+
+	for {
+		go checkLink(<- c, c)
+	}
 }
 
 func checkLink(link string, c chan string){
 	if _, err := http.Get(link); err != nil{
-		// fmt.Println(link, "is down")
-		c <- fmt.Sprintf("%s is down", link)
+		fmt.Println(link, "is down")
+		c <- link
 		return
 	}
-	// fmt.Println(link, "is up")
-	c <- fmt.Sprintf("%s is up", link)
+	fmt.Println(link, "is up")
+	c <- link
 }
